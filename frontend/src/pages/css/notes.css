@@ -1,0 +1,69 @@
+/* notes.css */
+.notes-container {
+  padding: 20px;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: linear-gradient(to right, #ffe6f0, #e6f7ff);
+  min-height: 100vh;
+}
+
+h2 {
+  color: #ff69b4;
+  text-shadow: 1px 1px 2px #fff;
+  margin-bottom: 20px;
+}
+
+.filter-category {
+  margin-bottom: 20px;
+}
+
+.filter-category select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 2px solid #ff69b4;
+  background-color: #fff0f5;
+  cursor: pointer;
+}
+
+.create-note {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.create-note input,
+.create-note select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 2px solid #ff69b4;
+  outline: none;
+  font-size: 14px;
+}
+
+.create-note input:focus,
+.create-note select:focus {
+  border-color: #ff1493;
+  box-shadow: 0 0 5px #ffb6c1;
+}
+
+.create-note button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #ff69b4;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.create-note button:hover {
+  background-color: #ff1493;
+  transform: scale(1.05);
+}
+
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}

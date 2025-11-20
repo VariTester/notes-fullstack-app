@@ -1,5 +1,8 @@
+// NoteCard.jsx
 import { useState, useEffect } from "react";
 import { getCategories } from "../api/categoriesApi";
+
+import "./css/noteCard.css";
 
 export default function NoteCard({ note, onEdit, onDelete, onToggleArchive }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -26,72 +29,62 @@ export default function NoteCard({ note, onEdit, onDelete, onToggleArchive }) {
     setEditCategoryId(note.category?.id ?? "");
   }, [note]);
 
-const handleSave = () => {
-  onEdit(note.id, {
-    title: editTitle,
-    content: editContent,
-    categoryId: editCategoryId ? Number(editCategoryId) : null
-  });
-  setIsEditing(false);
-};
+  const handleSave = () => {
+    onEdit(note.id, {
+      title: editTitle,
+      content: editContent,
+      categoryId: editCategoryId ? Number(editCategoryId) : null,
+    });
+    setIsEditing(false);
+  };
 
   return (
-    <div
-      style={{
-        border: "1px solid #ccc",
-        padding: "12px",
-        marginBottom: "12px",
-        borderRadius: "8px",
-        background: note.archived ? "#f3f3f3" : "white",
-      }}
-    >
+<div className={`note-card ${note.archived ? 'archived' : ''} ${isEditing ? 'editing' : ''}`}>
       {isEditing ? (
         <>
           <input
-            style={{ width: "100%", marginBottom: "6px" }}
+            className="input-edit"
             value={editTitle}
             onChange={(e) => setEditTitle(e.target.value)}
           />
-
           <textarea
-            style={{ width: "100%", marginBottom: "6px" }}
+            className="textarea-edit"
             value={editContent}
             onChange={(e) => setEditContent(e.target.value)}
           />
-
           <select
-            style={{ width: "100%", marginBottom: "10px" }}
+            className="select-edit"
             value={editCategoryId}
             onChange={(e) => setEditCategoryId(e.target.value)}
           >
             <option value="">Sin categoría</option>
             {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
+              <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}
           </select>
-
-          <button onClick={handleSave}>Guardar</button>
-          <button onClick={() => setIsEditing(false)}>Cancelar</button>
+          <div className="note-actions">
+            <button className="button-save" onClick={handleSave}>Guardar</button>
+            <button className="button-cancel" onClick={() => setIsEditing(false)}>Cancelar</button>
+          </div>
         </>
       ) : (
         <>
-          <h3>{note.title}</h3>
-          <p>{note.content}</p>
+          <h3 className="note-title">{note.title}</h3>
+          <p className="note-content">{note.content}</p>
+          <div className="note-card-category">
+          {note.category ? (
+            <span className="category-badge">{note.category.name}</span>
+          ) : (
+            <span className="category-badge no-category">Sin categoría</span>
+          )}
+        </div>
 
-<p style={{ marginTop: "6px", fontStyle: "italic", color: "#555" }}>
-  <strong>Categoría:</strong>{" "}
-  {note.category?.name || "Sin categoría"}
-</p>
-
-
-          <div style={{ marginTop: "10px" }}>
-            <button onClick={() => setIsEditing(true)}>Editar</button>
-            <button onClick={() => onToggleArchive(note.id)}>
+          <div className="note-actions">
+            <button className="button-edit" onClick={() => setIsEditing(true)}>Editar</button>
+            <button className="button-archive" onClick={() => onToggleArchive(note.id)}>
               {note.archived ? "Desarchivar" : "Archivar"}
             </button>
-            <button onClick={() => onDelete(note.id)}>Eliminar</button>
+            <button className="button-delete" onClick={() => onDelete(note.id)}>Eliminar</button>
           </div>
         </>
       )}

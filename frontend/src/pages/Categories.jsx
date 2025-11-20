@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import './css/categories.css'
 
 export default function Categories({ setCategoriesVersion }) {
   const [name, setName] = useState("");
@@ -36,7 +37,7 @@ export default function Categories({ setCategoriesVersion }) {
       const newCat = await res.json();
       setCategories([...categories, newCat]);
       setName("");
-      setCategoriesVersion(prev => prev + 1); // notificar cambios
+      setCategoriesVersion(prev => prev + 1);
     } catch (err) {
       console.error(err);
     }
@@ -54,37 +55,25 @@ export default function Categories({ setCategoriesVersion }) {
     setEditingName("");
   };
 
-  // Guardar edición ✅ Usa PATCH para coincidir con el backend
-const saveEdit = async (id) => {
-  if (!editingName.trim()) return;
+  // Guardar edición
+  const saveEdit = async (id) => {
+    if (!editingName.trim()) return;
 
-  try {
-    const res = await fetch(`${API_URL}/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: editingName }),
-    });
-
-    if (!res.ok) throw new Error("Error actualizando la categoría");
-
-    const updatedCat = await res.json();
-
-    // 🚀 Actualizamos de inmediato la UI local (sin refrescar)
-    setCategories(prev =>
-      prev.map(cat => (cat.id === id ? updatedCat : cat))
-    );
-
-    // 🔥 salimos del modo edición
-    cancelEdit();
-
-    // (Opcional) notificar al padre
-    setCategoriesVersion(prev => prev + 1);
-
-  } catch (err) {
-    console.error(err);
-  }
-};
-
+    try {
+      const res = await fetch(`${API_URL}/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: editingName }),
+      });
+      if (!res.ok) throw new Error("Error actualizando la categoría");
+      const updatedCat = await res.json();
+      setCategories(prev => prev.map(cat => (cat.id === id ? updatedCat : cat)));
+      cancelEdit();
+      setCategoriesVersion(prev => prev + 1);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   // Eliminar categoría
   const deleteCategory = async (id) => {
@@ -93,24 +82,24 @@ const saveEdit = async (id) => {
     try {
       const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Error eliminando la categoría");
-
       setCategories(categories.filter(cat => cat.id !== id));
-      setCategoriesVersion(prev => prev + 1); // notificar al padre
+      setCategoriesVersion(prev => prev + 1);
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <div>
+    <div className="categories-container">
       <h1>Categorías</h1>
 
       <input
+        className="category-input"
         placeholder="Nombre de categoría"
         value={name}
         onChange={e => setName(e.target.value)}
       />
-      <button onClick={handleCreate}>Crear</button>
+      <button className="create-btn" onClick={handleCreate}>Crear</button>
 
       <h2>Lista:</h2>
       <ul>
@@ -119,17 +108,18 @@ const saveEdit = async (id) => {
             {editingId === cat.id ? (
               <>
                 <input
+                  className="edit-input"
                   value={editingName}
-                  onChange={(e) => setEditingName(e.target.value)}
+                  onChange={e => setEditingName(e.target.value)}
                 />
-                <button onClick={() => saveEdit(cat.id)}>Guardar</button>
-                <button onClick={cancelEdit}>Cancelar</button>
+                <button className="save-btn" onClick={() => saveEdit(cat.id)}>Guardar</button>
+                <button className="cancel-btn" onClick={cancelEdit}>Cancelar</button>
               </>
             ) : (
               <>
-                {cat.name}{" "}
-                <button onClick={() => startEdit(cat)}>Editar</button>
-                <button onClick={() => deleteCategory(cat.id)}>Eliminar</button>
+                {cat.name}
+                <button className="edit-btn" onClick={() => startEdit(cat)}>Editar</button>
+                <button className="delete-btn" onClick={() => deleteCategory(cat.id)}>Eliminar</button>
               </>
             )}
           </li>

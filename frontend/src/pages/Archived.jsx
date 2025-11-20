@@ -8,6 +8,8 @@ import {
 import { getCategories } from "../api/categoriesApi";
 import NoteCard from "../components/NoteCard";
 
+import './css/notes.css'; // reutilizamos los estilos de notas activas
+
 export default function Archived() {
   const [notes, setNotes] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -43,37 +45,45 @@ export default function Archived() {
     loadNotes();
   };
 
+  // Filtrado de notas, igual que en Notas Activas
   const filteredNotes =
     filterCategoryId === "all"
       ? notes
-      : notes.filter(n => n.category?.id === Number(filterCategoryId));
+      : filterCategoryId === "none"
+        ? notes.filter(n => !n.category)
+        : notes.filter(n => n.category?.id === Number(filterCategoryId));
 
   return (
-    <div>
-      <h2>Archivadas</h2>
+    <div className="notes-container">
+      <h2>Notas Archivadas</h2>
 
-      <div style={{ marginBottom: "20px" }}>
+      {/* Filtro */}
+      <div className="filter-category">
         <label>Filtrar por categoría: </label>
         <select
           value={filterCategoryId}
           onChange={(e) => setFilterCategoryId(e.target.value)}
         >
           <option value="all">Todas</option>
+          <option value="none">Sin categoría</option>
           {categories.map((c) => (
             <option key={c.id} value={c.id}>{c.name}</option>
           ))}
         </select>
       </div>
 
-      {filteredNotes.map((note) => (
-        <NoteCard
-          key={note.id}
-          note={note}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          onToggleArchive={handleToggleArchive}
-        />
-      ))}
+      {/* Grid de notas archivadas */}
+      <div className="notes-grid">
+        {filteredNotes.map((note) => (
+          <NoteCard
+            key={note.id}
+            note={{ ...note, category: note.category || null }}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            onToggleArchive={handleToggleArchive}
+          />
+        ))}
+      </div>
     </div>
   );
 }

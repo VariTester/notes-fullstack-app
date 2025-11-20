@@ -1,0 +1,139 @@
+/* noteCard.css */
+.note-card {
+  background-color: #fff0f5;
+  border: 2px solid #ff69b4;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 2px 2px 10px rgba(255, 105, 180, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Espacio entre elementos */
+}
+
+.note-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 2px 4px 15px rgba(255, 105, 180, 0.5);
+}
+
+.note-card.archived {
+  background-color: #f0f0f0;
+  border-color: #aaa;
+  color: #555;
+}
+
+/* Vista normal */
+.note-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ff1493;
+  margin-bottom: 6px;
+}
+
+.note-content {
+  font-size: 14px;
+  margin-bottom: 6px;
+  white-space: pre-wrap; /* Mantener saltos de línea */
+}
+
+.note-card-category {
+  margin-top: 8px;
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  background-color: #ffcc00;
+  color: #000;
+  font-weight: bold;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.category-badge.no-category {
+  background-color: #ccc;
+  color: #333;
+}
+
+/* Botones */
+.note-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.note-actions button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.button-edit {
+  background-color: #ffb6c1;
+  color: #fff;
+}
+.button-edit:hover {
+  background-color: #ff69b4;
+}
+
+.button-archive {
+  background-color: #87cefa;
+  color: #fff;
+}
+.button-archive:hover {
+  background-color: #1e90ff;
+}
+
+.button-delete {
+  background-color: #ff6347;
+  color: #fff;
+}
+.button-delete:hover {
+  background-color: #ff0000;
+}
+
+/* Modo edición */
+.note-card.editing .input-edit,
+.note-card.editing .textarea-edit,
+.note-card.editing .select-edit {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 2px solid #ff69b4;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.note-card.editing .textarea-edit {
+  resize: vertical; /* solo permitir altura */
+  min-height: 80px;
+  max-height: 200px;
+}
+
+.note-card.editing .input-edit:focus,
+.note-card.editing .textarea-edit:focus,
+.note-card.editing .select-edit:focus {
+  border-color: #ff1493;
+  box-shadow: 0 0 5px #ffb6c1;
+}
+
+.button-save {
+  background-color: #32cd32;
+  color: white;
+}
+.button-save:hover {
+  background-color: #228b22;
+}
+
+.button-cancel {
+  background-color: #ffa500;
+  color: white;
+}
+.button-cancel:hover {
+  background-color: #ff8c00;
+}
