@@ -2,6 +2,7 @@
 import { Controller, Get, Post, Body, Param, Put, Patch, Delete } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { Note } from './note.entity';
+import { UpdateNoteDto } from './dto/update-note.dto';
 
 @Controller('notes')
 export class NotesController {
@@ -22,8 +23,25 @@ export class NotesController {
     return this.notesService.findAllArchived();
   }
 
+  // 🔥 NUEVO: listar notas activas por categoría
+  @Get('category/:categoryId')
+  findByCategory(@Param('categoryId') categoryId: string): Promise<Note[]> {
+    return this.notesService.findByCategory(+categoryId);
+  }
+
+  // 🔥 NUEVO: listar notas archivadas por categoría
+  @Get('category/:categoryId/archived')
+  findArchivedByCategory(
+    @Param('categoryId') categoryId: string,
+  ): Promise<Note[]> {
+    return this.notesService.findArchivedByCategory(+categoryId);
+  }
+
   @Put(':id')
-  update(@Param('id') id: string, @Body() noteData: Partial<Note>): Promise<Note> {
+  update(
+    @Param('id') id: string,
+    @Body() noteData: UpdateNoteDto
+  ): Promise<Note> {
     return this.notesService.update(+id, noteData);
   }
 

@@ -8,6 +8,7 @@ import {
 } from "../api/notesApi";
 import { getCategories } from "../api/categoriesApi";
 import NoteCard from "../components/NoteCard";
+import Categories from "./Categories";
 
 export default function Notes() {
   const [notes, setNotes] = useState([]);
@@ -19,20 +20,24 @@ export default function Notes() {
 
   const [filterCategoryId, setFilterCategoryId] = useState("all");
 
+  // Contador para recargar categorías
+  const [categoriesVersion, setCategoriesVersion] = useState(0);
+
   const loadNotes = async () => {
     const res = await getActiveNotes();
     setNotes(res.data);
   };
 
-const loadCategories = async () => {
-  const res = await getCategories();
-  setCategories(Array.isArray(res) ? res : []);
-};
+  const loadCategories = async () => {
+    const res = await getCategories();
+    setCategories(Array.isArray(res) ? res : []);
+  };
 
-useEffect(() => {
+  // Recargar notas y categorías al iniciar y cuando cambie categoriesVersion
+  useEffect(() => {
     loadNotes();
     loadCategories();
-  }, []);
+  }, [categoriesVersion]);
 
   const handleCreate = async () => {
     await createNote({
@@ -44,7 +49,6 @@ useEffect(() => {
     setNewTitle("");
     setNewContent("");
     setNewCategoryId("");
-
     loadNotes();
   };
 
@@ -63,11 +67,13 @@ useEffect(() => {
     loadNotes();
   };
 
-  // ⭐ Filtrado
+  // Filtrado de notas
   const filteredNotes =
     filterCategoryId === "all"
       ? notes
-      : notes.filter(n => n.category?.id === Number(filterCategoryId));
+      : filterCategoryId === "none"
+        ? notes.filter(n => !n.category)
+        : notes.filter(n => n.category?.id === Number(filterCategoryId));
 
   return (
     <div>
@@ -81,7 +87,8 @@ useEffect(() => {
           onChange={(e) => setFilterCategoryId(e.target.value)}
         >
           <option value="all">Todas</option>
-          {categories.map((c) => (
+          <option value="none">Sin categoría</option>
+          {categories.map(c => (
             <option key={c.id} value={c.id}>{c.name}</option>
           ))}
         </select>
@@ -99,7 +106,6 @@ useEffect(() => {
           value={newContent}
           onChange={(e) => setNewContent(e.target.value)}
         />
-
         <select
           value={newCategoryId}
           onChange={(e) => setNewCategoryId(e.target.value)}
@@ -109,19 +115,24 @@ useEffect(() => {
             <option key={cat.id} value={cat.id}>{cat.name}</option>
           ))}
         </select>
-
         <button onClick={handleCreate}>Crear Nota</button>
       </div>
 
       {filteredNotes.map((note) => (
-        <NoteCard
-          key={note.id}
-          note={note}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          onToggleArchive={handleToggleArchive}
-        />
+      <NoteCard
+        key={note.id}
+        note={{
+          ...note,
+          category: note.category || null, // aseguramos null si no existe
+        }}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        onToggleArchive={handleToggleArchive}
+      />
+
+
       ))}
+
     </div>
   );
 }

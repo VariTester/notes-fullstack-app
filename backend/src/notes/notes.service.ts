@@ -33,10 +33,45 @@ export class NotesService {
     });
   }
 
-  // Editar nota (devuelve también la categoría actualizada)
-  async update(id: number, data: Partial<Note>): Promise<Note> {
+  // 🔥 NUEVO: Filtrar notas por categoría
+  findByCategory(categoryId: number): Promise<Note[]> {
+    return this.notesRepository.find({
+      where: {
+        category: { id: categoryId },
+        archived: false,
+      },
+      relations: ['category'],
+    });
+  }
+
+  // 🔥 NUEVO OPCIONAL: Filtrar archivadas por categoría
+  findArchivedByCategory(categoryId: number): Promise<Note[]> {
+    return this.notesRepository.find({
+      where: {
+        category: { id: categoryId },
+        archived: true,
+      },
+      relations: ['category'],
+    });
+  }
+
+  // Editar nota
+  async update(id: number, data: any): Promise<Note> {
+    // Manejar cambio de categoría
+    if (data.categoryId !== undefined) {
+      if (data.categoryId === null || data.categoryId === '') {
+        data.category = null;
+      } else {
+        data.category = { id: data.categoryId };
+      }
+
+      delete data.categoryId;
+    }
+
+    // Actualizar datos
     await this.notesRepository.update(id, data);
 
+    // Retornar nota actualizada con categoría incluida
     const updated = await this.notesRepository.findOne({
       where: { id },
       relations: ['category'],

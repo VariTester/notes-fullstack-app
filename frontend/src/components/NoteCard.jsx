@@ -1,44 +1,39 @@
 import { useState, useEffect } from "react";
 import { getCategories } from "../api/categoriesApi";
 
-export default function NoteCard({
-  note,
-  onEdit,
-  onDelete,
-  onToggleArchive
-}) {
+export default function NoteCard({ note, onEdit, onDelete, onToggleArchive }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(note.title);
   const [editContent, setEditContent] = useState(note.content);
+  const [editCategoryId, setEditCategoryId] = useState(note.category?.id ?? "");
 
   const [categories, setCategories] = useState([]);
-  const [editCategoryId, setEditCategoryId] = useState(
-    note.category?.id ?? ""
-  );
+
+  // Cargar categorías al iniciar edición
+  const loadCategories = async () => {
+    const res = await getCategories();
+    setCategories(Array.isArray(res) ? res : res.data ?? []);
+  };
 
   useEffect(() => {
     if (isEditing) loadCategories();
   }, [isEditing]);
 
+  // Actualizar campos si cambia la nota
   useEffect(() => {
     setEditTitle(note.title);
     setEditContent(note.content);
     setEditCategoryId(note.category?.id ?? "");
   }, [note]);
 
-  const loadCategories = async () => {
-    const res = await getCategories();
-    setCategories(res.data ?? res);
-  };
-
-  const handleSave = () => {
-    onEdit(note.id, {
-      title: editTitle,
-      content: editContent,
-      category: editCategoryId ? { id: Number(editCategoryId) } : null
-    });
-    setIsEditing(false);
-  };
+const handleSave = () => {
+  onEdit(note.id, {
+    title: editTitle,
+    content: editContent,
+    categoryId: editCategoryId ? Number(editCategoryId) : null
+  });
+  setIsEditing(false);
+};
 
   return (
     <div
@@ -47,7 +42,7 @@ export default function NoteCard({
         padding: "12px",
         marginBottom: "12px",
         borderRadius: "8px",
-        background: note.archived ? "#f3f3f3" : "white"
+        background: note.archived ? "#f3f3f3" : "white",
       }}
     >
       {isEditing ? (
@@ -64,7 +59,6 @@ export default function NoteCard({
             onChange={(e) => setEditContent(e.target.value)}
           />
 
-          {/* Selector simple */}
           <select
             style={{ width: "100%", marginBottom: "10px" }}
             value={editCategoryId}
@@ -86,11 +80,11 @@ export default function NoteCard({
           <h3>{note.title}</h3>
           <p>{note.content}</p>
 
-          {note.category && (
-            <p style={{ marginTop: "6px", fontStyle: "italic", color: "#555" }}>
-              <strong>Categoría:</strong> {note.category.name}
-            </p>
-          )}
+<p style={{ marginTop: "6px", fontStyle: "italic", color: "#555" }}>
+  <strong>Categoría:</strong>{" "}
+  {note.category?.name || "Sin categoría"}
+</p>
+
 
           <div style={{ marginTop: "10px" }}>
             <button onClick={() => setIsEditing(true)}>Editar</button>

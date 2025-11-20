@@ -16,6 +16,11 @@ export class Note {
 
   @Column({ default: false })
   archived: boolean;
+
+  // Columna explícita para manejar categoryId (opcional pero recomendado)
+  @Column({ nullable: true })
+  categoryId: number | null;
+
   @ManyToOne(() => Category, (cat) => cat.notes, {
     nullable: true,
     onDelete: 'SET NULL',
