@@ -1,0 +1,15 @@
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { NotesService } from './notes.service';
+import { NotesController } from './notes.controller';
+import { Note } from './note.entity';
+import { Category } from 'src/categories/entities/category.entity';
+
+@Module({
+  imports: [
+    TypeOrmModule.forFeature([Note, Category]) // 👈 AGREGA Category
+  ],
+  controllers: [NotesController],
+  providers: [NotesService],
+})
+export class NotesModule {}
