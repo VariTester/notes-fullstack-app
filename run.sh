@@ -1,32 +1,39 @@
 #!/bin/bash
 
 echo "======================================"
-echo " Iniciando MYNOTESAPP"
+echo " Starting MYNOTESAPP"
 echo "======================================"
+
+echo "⚠ Asegúrate de que PostgreSQL 18 esté corriendo antes de ejecutar este script."
+echo "   Host: localhost"
+echo "   Port: 5432"
+echo "   User: notes_user"
+echo "   Password: 12345678"
+echo "   Database: notes_db"
+echo ""
 
 # -----------------------------
 # BACKEND
 # -----------------------------
-echo "→ Preparando backend..."
+echo "→ Preparing backend..."
 cd backend
 
-echo "→ Instalando dependencias del backend..."
+echo "→ Installing backend dependencies..."
 npm install
 
-echo "→ Iniciando backend NestJS..."
+echo "→ Starting NestJS backend..."
 npm run start:dev &
 
-# Esperar unos segundos para que el backend arranque
 sleep 5
 
 # -----------------------------
 # FRONTEND
 # -----------------------------
-echo "→ Preparando frontend..."
+echo "→ Preparing frontend..."
 cd ../frontend
 
-echo "→ Instalando dependencias del frontend..."
+echo "→ Installing frontend dependencies..."
 npm install
 
-echo "→ Iniciando frontend Vite..."
+echo "→ Starting Vite frontend..."
 npm run dev
