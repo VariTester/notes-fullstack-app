@@ -47,7 +47,6 @@
   transform: scale(1.05);
 }
 
-/* Lista de categorías */
 .categories-container ul {
   list-style: none;
   padding-left: 0;
@@ -71,7 +70,6 @@
   box-shadow: 2px 4px 12px rgba(255, 105, 180, 0.4);
 }
 
-/* Botones de la lista */
 .categories-container li button {
   margin-left: 6px;
   padding: 5px 10px;

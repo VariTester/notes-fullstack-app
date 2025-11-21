@@ -11,9 +11,9 @@ export default function App() {
 
         {/* Navegación */}
         <nav style={{ marginBottom: "20px" }}>
-          <Link to="/notes" style={{ marginRight: "10px" }}>Notas Activas</Link>
-          <Link to="/archived" style={{ marginRight: "10px" }}>Archivadas</Link>
-          <Link to="/categories">Categorías</Link>
+          <Link to="/notes" style={{ marginRight: "10px" }}>Active Notes</Link>
+          <Link to="/archived" style={{ marginRight: "10px" }}>Archived</Link>
+          <Link to="/categories">Categories</Link>
         </nav>
 
         {/* Rutas */}

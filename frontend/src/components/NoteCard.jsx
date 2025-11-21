@@ -1,4 +1,3 @@
-// NoteCard.jsx
 import { useState, useEffect } from "react";
 import { getCategories } from "../api/categoriesApi";
 
@@ -12,7 +11,7 @@ export default function NoteCard({ note, onEdit, onDelete, onToggleArchive }) {
 
   const [categories, setCategories] = useState([]);
 
-  // Cargar categorías al iniciar edición
+
   const loadCategories = async () => {
     const res = await getCategories();
     setCategories(Array.isArray(res) ? res : res.data ?? []);
@@ -22,7 +21,7 @@ export default function NoteCard({ note, onEdit, onDelete, onToggleArchive }) {
     if (isEditing) loadCategories();
   }, [isEditing]);
 
-  // Actualizar campos si cambia la nota
+
   useEffect(() => {
     setEditTitle(note.title);
     setEditContent(note.content);
@@ -57,14 +56,14 @@ export default function NoteCard({ note, onEdit, onDelete, onToggleArchive }) {
             value={editCategoryId}
             onChange={(e) => setEditCategoryId(e.target.value)}
           >
-            <option value="">Sin categoría</option>
+            <option value="">Uncategorized</option>
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}
           </select>
           <div className="note-actions">
-            <button className="button-save" onClick={handleSave}>Guardar</button>
-            <button className="button-cancel" onClick={() => setIsEditing(false)}>Cancelar</button>
+            <button className="button-save" onClick={handleSave}>Save</button>
+            <button className="button-cancel" onClick={() => setIsEditing(false)}>Cancel</button>
           </div>
         </>
       ) : (
@@ -75,16 +74,16 @@ export default function NoteCard({ note, onEdit, onDelete, onToggleArchive }) {
           {note.category ? (
             <span className="category-badge">{note.category.name}</span>
           ) : (
-            <span className="category-badge no-category">Sin categoría</span>
+            <span className="category-badge no-category">Uncategorized</span>
           )}
         </div>
 
           <div className="note-actions">
-            <button className="button-edit" onClick={() => setIsEditing(true)}>Editar</button>
+            <button className="button-edit" onClick={() => setIsEditing(true)}>Edit</button>
             <button className="button-archive" onClick={() => onToggleArchive(note.id)}>
-              {note.archived ? "Desarchivar" : "Archivar"}
+              {note.archived ? "Unarchive" : "Archive"}
             </button>
-            <button className="button-delete" onClick={() => onDelete(note.id)}>Eliminar</button>
+            <button className="button-delete" onClick={() => onDelete(note.id)}>Delete</button>
           </div>
         </>
       )}

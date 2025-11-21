@@ -9,7 +9,7 @@ export default function Categories({ setCategoriesVersion }) {
 
   const API_URL = "http://localhost:3000/categories";
 
-  // Cargar categorías
+ 
   const loadCategories = async () => {
     try {
       const res = await fetch(API_URL);
@@ -24,7 +24,7 @@ export default function Categories({ setCategoriesVersion }) {
     loadCategories();
   }, []);
 
-  // Crear nueva categoría
+
   const handleCreate = async () => {
     if (!name.trim()) return;
 
@@ -43,19 +43,19 @@ export default function Categories({ setCategoriesVersion }) {
     }
   };
 
-  // Iniciar edición
+
   const startEdit = (cat) => {
     setEditingId(cat.id);
     setEditingName(cat.name);
   };
 
-  // Cancelar edición
+
   const cancelEdit = () => {
     setEditingId(null);
     setEditingName("");
   };
 
-  // Guardar edición
+
   const saveEdit = async (id) => {
     if (!editingName.trim()) return;
 
@@ -65,7 +65,7 @@ export default function Categories({ setCategoriesVersion }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: editingName }),
       });
-      if (!res.ok) throw new Error("Error actualizando la categoría");
+      if (!res.ok) throw new Error("Error updating category");
       const updatedCat = await res.json();
       setCategories(prev => prev.map(cat => (cat.id === id ? updatedCat : cat)));
       cancelEdit();
@@ -75,13 +75,12 @@ export default function Categories({ setCategoriesVersion }) {
     }
   };
 
-  // Eliminar categoría
   const deleteCategory = async (id) => {
-    if (!window.confirm("¿Deseas eliminar esta categoría?")) return;
+    if (!window.confirm("Do you want to delete this category?")) return;
 
     try {
       const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("Error eliminando la categoría");
+      if (!res.ok) throw new Error("Error deleting category");
       setCategories(categories.filter(cat => cat.id !== id));
       setCategoriesVersion(prev => prev + 1);
     } catch (err) {
@@ -91,17 +90,17 @@ export default function Categories({ setCategoriesVersion }) {
 
   return (
     <div className="categories-container">
-      <h1>Categorías</h1>
+      <h1>Categories</h1>
 
       <input
         className="category-input"
-        placeholder="Nombre de categoría"
+        placeholder="Category Name"
         value={name}
         onChange={e => setName(e.target.value)}
       />
-      <button className="create-btn" onClick={handleCreate}>Crear</button>
+      <button className="create-btn" onClick={handleCreate}>New</button>
 
-      <h2>Lista:</h2>
+      <h2>List:</h2>
       <ul>
         {categories.map(cat => (
           <li key={cat.id}>
@@ -112,14 +111,14 @@ export default function Categories({ setCategoriesVersion }) {
                   value={editingName}
                   onChange={e => setEditingName(e.target.value)}
                 />
-                <button className="save-btn" onClick={() => saveEdit(cat.id)}>Guardar</button>
-                <button className="cancel-btn" onClick={cancelEdit}>Cancelar</button>
+                <button className="save-btn" onClick={() => saveEdit(cat.id)}>Save</button>
+                <button className="cancel-btn" onClick={cancelEdit}>Cancel</button>
               </>
             ) : (
               <>
                 {cat.name}
-                <button className="edit-btn" onClick={() => startEdit(cat)}>Editar</button>
-                <button className="delete-btn" onClick={() => deleteCategory(cat.id)}>Eliminar</button>
+                <button className="edit-btn" onClick={() => startEdit(cat)}>Edit</button>
+                <button className="delete-btn" onClick={() => deleteCategory(cat.id)}>Delete</button>
               </>
             )}
           </li>

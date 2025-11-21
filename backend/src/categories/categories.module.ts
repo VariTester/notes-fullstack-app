@@ -3,11 +3,11 @@ import { CategoriesService } from './categories.service';
 import { CategoriesController } from './categories.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Category } from './entities/category.entity';
-import { Note } from 'src/notes/note.entity'; // ⭐ IMPORTANTE
+import { Note } from 'src/notes/note.entity'; 
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Category, Note]), // ⭐ AÑADIR Note aquí
+    TypeOrmModule.forFeature([Category, Note]), 
   ],
   controllers: [CategoriesController],
   providers: [CategoriesService],

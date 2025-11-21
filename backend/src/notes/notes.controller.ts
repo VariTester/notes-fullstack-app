@@ -23,13 +23,11 @@ export class NotesController {
     return this.notesService.findAllArchived();
   }
 
-  // 🔥 NUEVO: listar notas activas por categoría
   @Get('category/:categoryId')
   findByCategory(@Param('categoryId') categoryId: string): Promise<Note[]> {
     return this.notesService.findByCategory(+categoryId);
   }
 
-  // 🔥 NUEVO: listar notas archivadas por categoría
   @Get('category/:categoryId/archived')
   findArchivedByCategory(
     @Param('categoryId') categoryId: string,

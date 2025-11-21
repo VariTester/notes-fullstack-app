@@ -8,7 +8,7 @@ import {
 import { getCategories } from "../api/categoriesApi";
 import NoteCard from "../components/NoteCard";
 
-import './css/notes.css'; // reutilizamos los estilos de notas activas
+import './css/notes.css'; 
 
 export default function Archived() {
   const [notes, setNotes] = useState([]);
@@ -45,7 +45,7 @@ export default function Archived() {
     loadNotes();
   };
 
-  // Filtrado de notas, igual que en Notas Activas
+
   const filteredNotes =
     filterCategoryId === "all"
       ? notes
@@ -55,24 +55,23 @@ export default function Archived() {
 
   return (
     <div className="notes-container">
-      <h2>Notas Archivadas</h2>
+      <h2>Archive Notes</h2>
 
-      {/* Filtro */}
+
       <div className="filter-category">
-        <label>Filtrar por categoría: </label>
+        <label>Filter by category: </label>
         <select
           value={filterCategoryId}
           onChange={(e) => setFilterCategoryId(e.target.value)}
         >
-          <option value="all">Todas</option>
-          <option value="none">Sin categoría</option>
+          <option value="all">All</option>
+          <option value="none">Uncategorized</option>
           {categories.map((c) => (
             <option key={c.id} value={c.id}>{c.name}</option>
           ))}
         </select>
       </div>
 
-      {/* Grid de notas archivadas */}
       <div className="notes-grid">
         {filteredNotes.map((note) => (
           <NoteCard

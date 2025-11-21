@@ -1,4 +1,3 @@
-// backend/src/categories/categories.controller.ts
 import {
   Controller,
   Get,

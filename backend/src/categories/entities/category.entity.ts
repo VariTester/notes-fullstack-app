@@ -1,4 +1,3 @@
-// backend/src/categories/entities/category.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Note } from 'src/notes/note.entity';
 

@@ -7,7 +7,7 @@ import { Category } from 'src/categories/entities/category.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Note, Category]) // 👈 AGREGA Category
+    TypeOrmModule.forFeature([Note, Category])
   ],
   controllers: [NotesController],
   providers: [NotesService],

@@ -11,13 +11,11 @@ export class NotesService {
     private notesRepository: Repository<Note>,
   ) {}
 
-  // Crear nota
   create(noteData: Partial<Note>): Promise<Note> {
     const note = this.notesRepository.create(noteData);
     return this.notesRepository.save(note);
   }
 
-  // Listar notas activas (incluye categoría)
   findAllActive(): Promise<Note[]> {
     return this.notesRepository.find({
       where: { archived: false },
@@ -25,7 +23,7 @@ export class NotesService {
     });
   }
 
-  // Listar notas archivadas (incluye categoría)
+
   findAllArchived(): Promise<Note[]> {
     return this.notesRepository.find({
       where: { archived: true },
@@ -33,7 +31,6 @@ export class NotesService {
     });
   }
 
-  // 🔥 NUEVO: Filtrar notas por categoría
   findByCategory(categoryId: number): Promise<Note[]> {
     return this.notesRepository.find({
       where: {
@@ -44,7 +41,6 @@ export class NotesService {
     });
   }
 
-  // 🔥 NUEVO OPCIONAL: Filtrar archivadas por categoría
   findArchivedByCategory(categoryId: number): Promise<Note[]> {
     return this.notesRepository.find({
       where: {
@@ -55,7 +51,6 @@ export class NotesService {
     });
   }
 
-  // Editar nota
   async update(id: number, data: any): Promise<Note> {
     // Manejar cambio de categoría
     if (data.categoryId !== undefined) {
@@ -68,10 +63,9 @@ export class NotesService {
       delete data.categoryId;
     }
 
-    // Actualizar datos
     await this.notesRepository.update(id, data);
 
-    // Retornar nota actualizada con categoría incluida
+
     const updated = await this.notesRepository.findOne({
       where: { id },
       relations: ['category'],
@@ -84,7 +78,6 @@ export class NotesService {
     return updated;
   }
 
-  // Archivar / desarchivar
   async toggleArchive(id: number): Promise<Note> {
     const note = await this.notesRepository.findOneBy({ id });
 
@@ -96,7 +89,6 @@ export class NotesService {
     return this.notesRepository.save(note);
   }
 
-  // Eliminar nota
   delete(id: number): Promise<void> {
     return this.notesRepository.delete(id).then(() => undefined);
   }

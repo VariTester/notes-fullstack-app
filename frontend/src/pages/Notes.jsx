@@ -23,7 +23,7 @@ export default function Notes() {
 
   const [filterCategoryId, setFilterCategoryId] = useState("all");
 
-  // Contador para recargar categorías
+
   const [categoriesVersion, setCategoriesVersion] = useState(0);
 
   const loadNotes = async () => {
@@ -36,7 +36,7 @@ export default function Notes() {
     setCategories(Array.isArray(res) ? res : []);
   };
 
-  // Recargar notas y categorías al iniciar y cuando cambie categoriesVersion
+
   useEffect(() => {
     loadNotes();
     loadCategories();
@@ -70,7 +70,7 @@ export default function Notes() {
     loadNotes();
   };
 
-  // Filtrado de notas
+
   const filteredNotes =
     filterCategoryId === "all"
       ? notes
@@ -80,17 +80,17 @@ export default function Notes() {
 
   return (
   <div className="notes-container">
-    <h2>Notas Activas</h2>
+    <h2>Active Notes</h2>
 
     {/* Filtro */}
     <div className="filter-category">
-      <label>Filtrar por categoría: </label>
+      <label>Filter by category: </label>
       <select
         value={filterCategoryId}
         onChange={(e) => setFilterCategoryId(e.target.value)}
       >
-        <option value="all">Todas</option>
-        <option value="none">Sin categoría</option>
+        <option value="all">All</option>
+        <option value="none">Uncategorized</option>
         {categories.map(c => (
           <option key={c.id} value={c.id}>{c.name}</option>
         ))}
@@ -100,12 +100,12 @@ export default function Notes() {
     {/* Crear nota */}
     <div className="create-note">
       <input
-        placeholder="Título"
+        placeholder="Tittle"
         value={newTitle}
         onChange={(e) => setNewTitle(e.target.value)}
       />
       <input
-        placeholder="Contenido"
+        placeholder="Content"
         value={newContent}
         onChange={(e) => setNewContent(e.target.value)}
       />
@@ -113,12 +113,12 @@ export default function Notes() {
         value={newCategoryId}
         onChange={(e) => setNewCategoryId(e.target.value)}
       >
-        <option value="">Sin categoría</option>
+        <option value="">Uncategorized</option>
         {categories.map(cat => (
           <option key={cat.id} value={cat.id}>{cat.name}</option>
         ))}
       </select>
-      <button onClick={handleCreate}>Crear Nota</button>
+      <button onClick={handleCreate}>Create Note</button>
     </div>
 
     {/* Grid de notas */}

@@ -1,4 +1,3 @@
-// backend/src/notes/note.entity.ts
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Category } from 'src/categories/entities/category.entity';
 
@@ -17,7 +16,6 @@ export class Note {
   @Column({ default: false })
   archived: boolean;
 
-  // Columna explícita para manejar categoryId (opcional pero recomendado)
   @Column({ nullable: true })
   categoryId: number | null;
 
